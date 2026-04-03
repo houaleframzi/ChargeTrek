@@ -1,7 +1,3 @@
-Here is a **clean, professional README.md** tailored to your paper and GitHub expectations. It emphasizes **visual RL**, is structured for research repos, and ends with your requested note.
-
----
-
 # 🔋 ChargeTrek: Visual Reinforcement Learning for EV Charging in V2G Systems
 
 **ChargeTrek** is a **visual reinforcement learning (Visual RL)** framework for optimizing electric vehicle (EV) charging and discharging in **vehicle-to-grid (V2G)** systems.
