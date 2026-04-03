@@ -133,8 +133,7 @@ ChargeTrek is benchmarked against:
 If you use this repository, please cite:
 
 ```
-Houalef, A.-R., Mendoza, J. E., Delavernhe, F., Senouci, S.-M.
-ChargeTrek: A Gamified Visual Learning Framework for EV Charging in V2G Systems, 2026.
+Houalef A-R, Mendoza JE, Delavernhe F, Senouci S-M. ChargeTrek: A gamified visual learning framework for EV charging in V2G systems . Applied Energy. doi: https://doi.org/10.1016/j.apenergy.2026.127853
 ```
 
 ---
