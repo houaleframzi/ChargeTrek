@@ -1,144 +1,106 @@
-# 🔋 ChargeTrek: Visual Reinforcement Learning for EV Charging in V2G Systems
+# ChargeTrek: Visual Reinforcement Learning for EV Charging in V2G Systems
 
-**ChargeTrek** is a **visual reinforcement learning (Visual RL)** framework for optimizing electric vehicle (EV) charging and discharging in **vehicle-to-grid (V2G)** systems.
+[![Python 3.10](https://img.shields.io/badge/Python-3.10-blue.svg)](#)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
+[![Framework](https://img.shields.io/badge/Framework-Gymnasium-orange.svg)](#)
+[![RL](https://img.shields.io/badge/RL-C51%20%7C%20DAgger-blueviolet.svg)](#)
 
-It reformulates EV charging as an **Atari-style visual decision-making problem**, where agents learn directly from image-based representations of electricity prices, uncertainty, and battery state.
+**ChargeTrek** is a **visual reinforcement learning (Visual RL)** framework that turns electric vehicle (EV) charging/discharging into an **Atari‑style decision‑making problem**. Instead of feeding the agent numerical tables or hand‑crafted features, ChargeTrek encodes electricity price signals, forecast errors, and battery dynamics directly into **RGBA images**. A convolutional neural network (CNN) then learns to navigate this visual world, deciding when to **charge**, **discharge**, or **stay idle**.
 
----
-
-## 🚀 Overview
-
-Traditional EV charging optimization relies on static or numerical models with limited interpretability. ChargeTrek introduces a **gamified, visual learning environment** that enables agents to:
-
-* Learn from **high-dimensional visual inputs (images)**
-* Adapt to **uncertain and dynamic electricity prices**
-* Make **sequential decisions** (charge / discharge / idle)
-* Respect **battery and mobility constraints**
-
-The result is a framework that is both **interpretable and performant**, bridging reinforcement learning, imitation learning, and energy systems optimization.
+The project targets **vehicle‑to‑grid (V2G)** scenarios and is built to be:
+- **Interpretable** – you can literally *see* what the agent sees.
+- **Robust** – works under real‑world price uncertainty.
+- **Safe** – hard constraints on battery state‑of‑charge are always respected.
 
 ---
 
-## 🎮 Environment Design
+## Table of Contents
 
-ChargeTrek models EV charging as a **2D grid-based game**:
-
-* **X-axis** → Time (up to 24h, 15-min resolution)
-* **Y-axis** → State of Charge (SoC, 0–100%)
-
-Each state is encoded as an **RGBA image**:
-
-* 🔴 **Red / Green** → Electricity price (expensive vs cheap)
-* 🔵 **Blue** → Forecast error direction
-* ⚪ **Alpha** → Uncertainty magnitude
-
-The agent navigates this grid:
-
-* ↗ Charge
-* ↘ Discharge
-* → Idle
-
----
-
-## 👁️ Visual Reinforcement Learning
-
-ChargeTrek leverages **Visual RL**, where:
-
-* The environment is treated as an **image**
-* Policies are learned using **Convolutional Neural Networks (CNNs)**
-* No handcrafted features are required
-
-This allows the agent to:
-
-* Recognize **spatial and temporal patterns**
-* Interpret **price signals visually**
-* Learn **robust strategies under uncertainty**
+1. [What Problem Does ChargeTrek Solve?](#what-problem-does-chargetrek-solve)
+2. [Key Features](#key-features)
+3. [Environment Design (The “Game”)](#environment-design-the-game)
+4. [Supported Algorithms & Baselines](#supported-algorithms--baselines)
+5. [Installation](#installation)
+6. [Quick Start](#quick-start)
+   - [Playing with a Trained Agent](#playing-with-a-trained-agent)
+   - [Training Your Own Agent](#training-your-own-agent)
+7. [Project Structure](#project-structure)
+8. [Data Source](#data-source)
+9. [Performance Highlights](#performance-highlights)
+10. [Deployment Perspective](#deployment-perspective)
+11. [Citation](#citation)
+12. [License](#license)
+13. [Contributing](#contributing)
 
 ---
 
-## 🤖 Methods
+## What Problem Does ChargeTrek Solve?
 
-### Reinforcement Learning
+Electricity prices are volatile, and forecasts are never perfect. An EV owner (or fleet operator) wants to:
+- **Minimise charging costs**.
+- **Sell energy back to the grid** (V2G) when prices are high.
+- **Guarantee a desired battery level** by the next departure.
 
-* **C51 (Distributional DQN)**
-  Learns value distributions for stable decision-making
-
-### Imitation Learning
-
-* **Imitation-Based Reward Shaping**
-* **DAgger (Dataset Aggregation)**
-
-### Hybrid Approach
-
-* Combines learned policies with **graph-based fallback (Bellman-Ford)**
-* Ensures **feasibility and safety (SoC constraints always satisfied)**
+Traditional approaches use linear programming or model‑predictive control, which rely on accurate forecasts and are often opaque. ChargeTrek takes a different route: it teaches an **AI agent to *see* the problem** and learn a policy directly from pixels, much like DeepMind’s DQN plays Atari games.
 
 ---
 
-## 📊 Baselines
+## Key Features
 
-ChargeTrek is benchmarked against:
-
-* **Immediate Charger** → naive human-like behavior
-* **Stepwise Planner** → short-term optimization
-* **Optimal (Oracle)** → full future knowledge (upper bound)
-
----
-
-## 📈 Key Results
-
-* Up to **34% cost reduction** vs. typical charging behavior
-* **DAgger agents** achieve near-optimal performance
-* Visual RL enables:
-
-  * Better **interpretability**
-  * Stable learning
-  * Strong generalization
+- **Visual RL Environment** – A custom `gymnasium` environment that renders the charging task as a 2D grid image.
+- **Three Action Modes** – Charge (+), Discharge (–), Idle (→).
+- **Multiple Training Strategies**
+  - **C51 (Distributional DQN)** – pure RL with a categorical value distribution.
+  - **DAgger (Dataset Aggregation)** – imitation learning that mixes expert demonstrations with the agent’s own experience.
+  - **IB‑C51** – C51 initialised with expert trajectories.
+- **Safety Guarantee** – A **Bellman‑Ford**‑based fallback planner ensures the agent never violates SoC constraints.
+- **Real‑World Data** – Uses **CAISO** (California ISO) day‑ahead and real‑time prices.
+- **Scalable Training** – On‑disk replay buffers (`LMDB`) allow training on millions of transitions without running out of RAM.
+- **Interactive Visualisation** – Watch the agent move through the grid in real‑time with `matplotlib`.
 
 ---
 
-## ⚡ Data
+## Environment Design (The “Game”)
 
-* Source: **CAISO electricity market**
-* Includes:
+The environment is a **2D grid**:
 
-  * Day-ahead price forecasts
-  * Real-time prices (15-min resolution)
-* Captures **real-world volatility and uncertainty**
+- **X‑axis** → Time (up to 24 h, 15‑min resolution → 96 steps)
+- **Y‑axis** → State of Charge (SoC, 0 % to 100 %, 101 discrete levels)
 
----
+Each **cell** is an **RGBA pixel** encoding:
 
-## 🚗 Deployment Perspective
+| Channel | Meaning |
+|---------|---------|
+| **R**   | Red intensity proportional to electricity **price** (expensive → bright red) |
+| **G**   | Green intensity proportional to **cheapness** (low price → bright green) |
+| **B**   | Blue = **forecast error sign** (100 if real price > forecast, else 0) |
+| **A**   | Alpha = **uncertainty magnitude** (transparent = low error, opaque = high error) |
 
-* Designed for **real-time inference on EV embedded systems**
-* Lightweight execution (no training required onboard)
-* Compatible with:
-
-  * Vehicle-side decision-making
-  * Cloud retraining + OTA updates
+The agent starts at a specific `(time, SoC)` cell and can move **up** (charge), **down** (discharge), or **right** (idle). The goal is to reach the **target SoC** at the **departure time** while maximising cumulative reward (which reflects monetary profit).
 
 ---
 
-## 🧠 Research Contributions
+## Supported Algorithms & Baselines
 
-* First **visual RL framework** for EV charging optimization
-* Novel **image-based state representation (price + uncertainty)**
-* Integration of **RL, IL, and optimization** in one environment
-* Demonstrates **gamification as a tool for energy optimization**
+| Method | Description |
+|--------|-------------|
+| **C51** | Distributional DQN that learns a full value distribution. |
+| **DAgger‑DQN** | Supervised learning on expert‑labelled data, iteratively refined with the agent’s own actions. |
+| **IB‑C51** | C51 pre‑trained with imitation (behaviour cloning) and then fine‑tuned. |
+| **Immediate Charger** | Naïve human‑like behaviour (charge immediately until full). |
+| **Stepwise Planner** | Short‑term optimisation that re‑plans every 15 minutes. |
+| **Optimal (Oracle)** | Full future knowledge via Bellman‑Ford on the price graph – **upper performance bound**. |
 
----
-
-## 📄 Citation
-
-If you use this repository, please cite:
-
-```
-Houalef A-R, Mendoza JE, Delavernhe F, Senouci S-M. ChargeTrek: A gamified visual learning framework for EV charging in V2G systems . Applied Energy. doi: https://doi.org/10.1016/j.apenergy.2026.127853
-```
+All RL agents use the same CNN backbone (3 convolutional layers + 2 fully‑connected layers) that processes the `(4, 101, 96)` image.
 
 ---
 
-## 📌 Notes
+## Installation
 
-This repository is under active development.
-**Files and code structure will be updated soon after refactoring.**
+> **Requires Python 3.10** (as specified in the repository). The code was tested on Python 3.10.12.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/houaleframzi/ChargeTrek.git
+cd ChargeTrek
