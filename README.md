@@ -80,10 +80,10 @@ The agent starts at a specific `(time, SoC)` cell and can move **up** (charge), 
 
 ## Demonstration
 
-**Full environment demonstration example
+**Environment demonstration example
 
 <p align="center">
-  <img src=".\visual_example_chargetrek.gif" width="800" alt="ChargeTrek Demonstration">
+  <img src="/visual_example_chargetrek.gif" width="800" alt="ChargeTrek Demonstration">
 </p>
 
 <p align="center"><em>Figure: ChargeTrek Demonstration</em></p>
