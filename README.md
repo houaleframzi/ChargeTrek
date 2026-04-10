@@ -123,8 +123,7 @@ Controls:
 - 0 – Charge  
 - 1 – Discharge  
 - 2 – Idle  
-- m – Optimal step  
-- n – Next episode  
+- m – Next Step of the Selected Strategy
 
 ---
 
@@ -199,11 +198,18 @@ CAISO electricity market data (day‑ahead + real‑time).
 ## Citation
 
 ```bibtex
-@misc{houalef2026chargetrek,
-  author = {Houalef, Ramzi},
-  title = {ChargeTrek: Visual Reinforcement Learning for EV Charging in V2G Systems},
-  year = {2026},
-  howpublished = {https://github.com/houaleframzi/ChargeTrek}
+@article{HOUALEF2026127853,
+title = {ChargeTrek: A gamified visual learning framework for EV charging in V2G systems},
+journal = {Applied Energy},
+volume = {414},
+pages = {127853},
+year = {2026},
+issn = {0306-2619},
+doi = {https://doi.org/10.1016/j.apenergy.2026.127853},
+url = {https://www.sciencedirect.com/science/article/pii/S0306261926005052},
+author = {Ahmed-Ramzi Houalef and Jorge E. Mendoza and Florian Delavernhe and Sidi-Mohammed Senouci},
+keywords = {Electric vehicles, Vehicle-to-grid, Smart grid, Reinforcement learning, Gamification, Charging optimization, Imitation learning, Dynamic optimization, Scheduling;Visual reinforcement learning, AI},
+abstract = {The rapid rise of electric vehicles (EVs) and their integration into power systems through vehicle-to-grid technologies have created unprecedented opportunities for intelligent energy management. EVs can not only charge during off-peak hours but also discharge stored energy back to the grid during periods of high demand—an interaction traditionally modeled as a static optimization problem. In reality, however, EV charging behavior is inherently dynamic: fluctuating electricity prices, uncertain user mobility, and varying grid conditions transform this task into a complex, time-dependent optimization challenge. Conventional optimization approaches often struggle to adapt to such nonstationary and uncertain environments. In contrast, reinforcement learning and imitation learning have shown exceptional abilities to handle dynamic decision-making, particularly in domains such as Atari video games, where agents learn optimal strategies through continuous interaction and feedback. Inspired by this, we introduce ChargeTrek—a novel, gamified environment that reimagines EV charging as an Atari-style video game. By translating the problem into a visual, interactive, and interpretable framework, ChargeTrek bridges the gap between abstract optimization and interpretable decision-making. Within this environment, an autonomous agent learns when to charge, discharge, or remain idle by leveraging real-time electricity price signals while respecting user mobility constraints. Computational experimentation demonstrates that ChargeTrek can reduce charging costs by up to 34% compared to typical human charging behavior.}
 }
 ```
 
@@ -212,13 +218,6 @@ CAISO electricity market data (day‑ahead + real‑time).
 ## License
 
 MIT License
-
----
-
-## Contributing
-
-- Open issues  
-- Submit PRs  
 
 ---
 
