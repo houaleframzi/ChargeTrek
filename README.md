@@ -142,14 +142,34 @@ python train_IB_c51.py
 
 ```
 ChargeTrek/
-├── agents/
-├── envs/
-├── utils/
-├── benchmarks/
-├── data/
-├── buffers/
-├── checkpoints/
-├── logs/
+├── agents/                 # RL agent implementations
+│   ├── c51_agent.py        # C51 (distributional DQN)
+│   ├── dagger_dqn_agent.py # DAgger
+│
+├── envs/                   # Gymnasium environment
+│   └── chargetrek_env.py   # Main environment (grid, rewards, transitions)
+│
+├── utils/                  # Helper modules
+│   ├── price_loader.py     # Load & preprocess CAISO data, create RGBA grid
+│   ├── soc_mapper.py       # SoC ↔ grid‑row conversion
+│   ├── disk_replay_buffer.py  # LMDB‑backed replay buffer
+│   └── charge_trek_multigraph.py  # Graph builder for Bellman‑Ford
+│
+├── benchmarks/             # Baseline solvers
+│   ├── magic_solver.py     # Optimal (Bellman‑Ford) path
+│   └── realistic_solver.py # Stepwise replanning
+│
+├── data/                   # CAISO electricity price CSV files
+├── buffers/                # LMDB replay buffers (created during training)
+├── checkpoints/            # Saved model weights
+├── logs/                   # Training logs (CSV)
+│
+├── play_chargtrek.py       # Interactive visualisation script
+├── train_c51.py            # Training script for C51
+├── train_dagger.py         # Training script for DAgger‑DQN
+├── train_IB_c51.py         # Training script for IB‑C51
+├── requirements.txt        # Python dependencies
+└── README.md
 ```
 
 ---
