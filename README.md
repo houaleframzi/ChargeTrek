@@ -22,7 +22,6 @@ The project targets vehicle‑to‑grid (V2G) scenarios and is built to be:
 - Supported Algorithms & Baselines
 - Installation
 - Quick Start
-- Playing with a Trained Agent
 - Training Your Own Agent
 - Project Structure
 - Data Source
