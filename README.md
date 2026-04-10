@@ -78,6 +78,16 @@ Each **cell** is an **RGBA pixel** encoding:
 
 The agent starts at a specific `(time, SoC)` cell and can move **up** (charge), **down** (discharge), or **right** (idle). The goal is to reach the **target SoC** at the **departure time** while maximising cumulative reward (which reflects monetary profit).
 
+## Demonstration
+
+**Full environment demonstration example
+
+<p align="center">
+  <img src="visual_example_chargetrek.gif" width="800" alt="ChargeTrek Demonstration">
+</p>
+
+<p align="center"><em>Figure: ChargeTrek Demonstration</em></p>
+
 ---
 
 ## Supported Algorithms & Baselines
