@@ -53,7 +53,7 @@ Traditional approaches use linear programming or model‑predictive control, whi
 ### Multiple Training Strategies
 - **C51 (Distributional DQN)** – pure RL with a categorical value distribution.  
 - **DAgger (Dataset Aggregation)** – imitation learning mixing expert demonstrations with agent experience.  
-- **IB‑C51** – C51 initialised with expert trajectories.  
+- **IB‑C51** – C51 with expert trajectories.  
 
 - **Safety Guarantee** – Bellman‑Ford‑based fallback planner ensures no SoC violations.  
 - **Real‑World Data** – Uses CAISO electricity prices.  
